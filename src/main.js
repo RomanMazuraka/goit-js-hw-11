@@ -1,12 +1,22 @@
-const API_KEY = '3325286-fa3dfcca09e09505ab6e3c966';
-const searchTerm = 'cat'; // Приклад: пошук картинок котів
 
-fetch(`https://pixabay.com/api/?key=${API_KEY}&q=${searchTerm}`)
-  .then(response => response.json())
-  .then(data => {
-    // Обробка отриманих даних
-    console.log(data);
-  })
-  .catch(error => {
-    console.error('Error fetching data:', error);
-  });
+import { fetchImages } from './js/pixabay-api';
+import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
+
+
+const form = document.querySelector('#search-form');
+const input = document.querySelector('#search-input');
+
+form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const query = input.value.trim();
+    if (!query) {
+        iziToast.warning({
+            title: 'Warning',
+            message: 'Please enter a search query',
+        });
+        return;
+    }
+    fetchImages(query);
+    input.value = '';
+});
